@@ -1,19 +1,17 @@
 <div class="container">
-  <mat-card *ngIf="assignmentTransmis">
-    <mat-card-title>{{assignmentTransmis.nom}}</mat-card-title>
-    <mat-card-subtitle>{{assignmentTransmis.dateDeRendu | date}}</mat-card-subtitle>
-    <div id="bottom">
-      <mat-checkbox *ngIf="!assignmentTransmis.rendu" (click)="onAssignmentRendu()">
-        Rendu
-      </mat-checkbox>
-      <nav>
-
-          <button [disabled]="!isAdmin()" mat-stroked-button color="primary" (click)="onClickEdit()">EDIT</button>
-
-      </nav>
-
-
-      <button mat-stroked-button color="warn" (click)="onDelete()">DELETE</button>
-    </div>
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image" style="background-image: url('../../assets/images/matieres/{{assignmentTransmis.matiere.iconMatiere}}');
+      background-size: cover;"></div>
+      <mat-card-title>{{assignmentTransmis.nom}}</mat-card-title>
+      <mat-card-subtitle>Date rendu: {{assignmentTransmis.dateDeRendu | date}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Matiere: {{assignmentTransmis.matiere.matiere}}</p>
+      <p>Note: {{assignmentTransmis.note}}</p>
+      <p>Etudiant: {{assignmentTransmis.etudiant.Nom}}</p>
+      <p>Profs: {{assignmentTransmis.matiere.prof}}</p>
+    </mat-card-content>
+    <img style="width: 100px; margin-left: 0;" mat-card-image src="../../assets/images/profs/{{assignmentTransmis.matiere.photoProf}}" alt="Photo du prof">
   </mat-card>
 </div>

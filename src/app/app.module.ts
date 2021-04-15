@@ -28,6 +28,8 @@ import { EditAssigmentComponent } from './assignments/edit-assigment/edit-assigm
 import { AuthGuard } from './shared/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 const routes:Routes = [
   {
@@ -78,6 +80,7 @@ const routes:Routes = [
     ReactiveFormsModule,
     MatSlideToggleModule,
     ScrollingModule,
+    MatTabsModule,
     RouterModule.forRoot(routes), HttpClientModule
   ],
   providers: [],

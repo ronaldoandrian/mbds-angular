@@ -4,29 +4,37 @@
       Ajouter un assignment
     </button>
   </a>
-  <h1>Liste des assignments (scrolling infini)</h1>
+  <h1>Liste des assignments</h1>
   <mat-divider></mat-divider>
-  
-  <cdk-virtual-scroll-viewport #scroller itemSize="50" class="example-viewport" class="example-viewport">
-    <mat-list *cdkVirtualFor="let a of assignments">
+  <cdk-virtual-scroll-viewport #scroller itemSize="50" class="example-viewport" class="example-viewport" style="left: 25%;">
+      
+      <mat-list *cdkVirtualFor="let a of assignments">
       <nav>
-        <a routerLink="/assignment/{{a.id}}">
-          <h3 mat-subheader>{{a.dateDeRendu | date}}</h3>
-          <mat-list-item class="example-item">
-            <mat-divider></mat-divider>
-
-            <p *ngIf="a.rendu; else nonsoumis" appRendu>
-              {{a.nom}}, rendu par l'élève.
-            </p>
-            <ng-template #nonsoumis>
-              <p appNonRendu>
-                {{a.nom}}, non encore rendu par l'élève.
+        <a routerLink="/assignment/{{a.id}}" style="text-decoration: none;">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image" style="background-image: url('../../assets/images/matieres/{{a.matiere.iconMatiere}}');
+              background-size: cover;"></div>
+              <mat-card-title>{{a.nom}}</mat-card-title>
+              <mat-card-subtitle>Date rendu: {{a.dateDeRendu | date}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Matiere: {{a.matiere.matiere}}</p>
+              <p *ngIf="a.rendu; else nonsoumis" appRendu>
+                Status: rendu (Note: {{a.note}})
               </p>
-            </ng-template>
-
-          </mat-list-item>
+              <ng-template #nonsoumis>
+                <p appNonRendu>
+                  Status: Pas encore rendu
+                </p>
+              </ng-template>
+              <p>Etudiant: {{a.etudiant.Nom}}</p>
+              <p>Profs: {{a.matiere.prof}}</p>
+            </mat-card-content>
+          </mat-card>
         </a>
       </nav>
     </mat-list>
   </cdk-virtual-scroll-viewport>
+
 </main>

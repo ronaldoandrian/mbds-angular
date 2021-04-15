@@ -14,6 +14,7 @@ export class AssignmentsComponent implements OnInit {
   assignments: Assignment[];
   page: number = 1;
   limit: number = 100;
+  rendu: boolean = true;
   totalDocs: number;
   totalPages: number;
   hasPrevPage: boolean;
@@ -38,15 +39,23 @@ export class AssignmentsComponent implements OnInit {
       console.log("Dans le subscribe des queryParams");
       this.page = +queryParams.page || 1;
       this.limit = +queryParams.limit || 10;
+      this.rendu = queryParams.rendu || true;
 
       this.getAssignments();
     });
     console.log("getAssignments() du service appelé");
   }
 
+  reload(event) {
+    this.page = 1;
+    this.limit = 10;
+    this.rendu = event.index === 0;
+    this.getAssignments();
+  }
+
   getAssignments() {
     this.assignmentsService
-      .getAssignmentsPagine(this.page, this.limit)
+      .getAssignmentsPagine(this.page, this.limit, this.rendu)
       .subscribe((data) => {
         this.assignments = data.docs;
         this.page = data.page;
@@ -63,7 +72,7 @@ export class AssignmentsComponent implements OnInit {
 
   getPlusDAssignmentsPourScrolling() {
     this.assignmentsService
-      .getAssignmentsPagine(this.page, this.limit)
+      .getAssignmentsPagine(this.page, this.limit, this.rendu)
       .subscribe((data) => {
         // au lieu de remplacer this.assignments par les nouveaux assignments récupérés
         // on va les ajouter à ceux déjà présents...
@@ -87,38 +96,38 @@ export class AssignmentsComponent implements OnInit {
 
     // On va s'abonner aux évenements de scroll sur le scrolling...
     this.scroller
-      .elementScrolled()
-      .pipe(
-        map((event) => {
-          return this.scroller.measureScrollOffset("bottom");
-        }),
-        pairwise(),
-        /*
-        tap(([y1, y2]) => {
-          if(y2 < y1) {
-            console.log("ON SCROLLE VERS LE BAS !")
-          } else {
-            console.log("ON SCROLLE VERS LE HAUT !")
-          }
-        }),
-        */
-        filter(([y1, y2]) => y2 < y1 && y2 < 200),
-        throttleTime(200) // on ne va en fait envoyer le dernier événement que toutes les 200ms.
-        // on va ignorer tous les évéments arrivés et ne garder que le dernier toutes
-        // les 200ms
-      )
-      .subscribe((dist) => {
-        this.ngZone.run(() => {
-          if (this.hasNextPage) {
-            this.page = this.nextPage;
-            console.log(
-              "Je charge de nouveaux assignments page = " + this.page
-            );
-            this.getPlusDAssignmentsPourScrolling();
-          }
-        });
+    .elementScrolled()
+    .pipe(
+      map((event) => {
+        return this.scroller.measureScrollOffset("bottom");
+      }),
+      pairwise(),
+      /*
+      tap(([y1, y2]) => {
+        if(y2 < y1) {
+          console.log("ON SCROLLE VERS LE BAS !")
+        } else {
+          console.log("ON SCROLLE VERS LE HAUT !")
+        }
+      }),
+      */
+      filter(([y1, y2]) => y2 < y1 && y2 < 200),
+      throttleTime(200) // on ne va en fait envoyer le dernier événement que toutes les 200ms.
+      // on va ignorer tous les évéments arrivés et ne garder que le dernier toutes
+      // les 200ms
+    )
+    .subscribe((dist) => {
+      this.ngZone.run(() => {
+        if (this.hasNextPage) {
+          this.page = this.nextPage;
+          console.log(
+            "Je charge de nouveaux assignments page = " + this.page
+          );
+          this.getPlusDAssignmentsPourScrolling();
+        }
       });
-  }
+    });
+}
 
   onDeleteAssignment(event) {
     // event = l'assignment à supprimer
