@@ -27,6 +27,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { EditAssigmentComponent } from './assignments/edit-assigment/edit-assigment.component';
 import { AuthGuard } from './shared/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 const routes:Routes = [
   {
@@ -75,6 +76,8 @@ const routes:Routes = [
     MatNativeDateModule, MatListModule, MatCardModule, MatCheckboxModule,
     MatSlideToggleModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
+    ScrollingModule,
     RouterModule.forRoot(routes), HttpClientModule
   ],
   providers: [],

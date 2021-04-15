@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import {User} from '../account/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +17,13 @@ export class AuthService {
     // typiquement, acceptera en paramètres un login et un password
     // vérifier qu'ils sont ok, et si oui, positionner la propriété loggedIn à true
     // si login/password non valides, positionner à false;
+    let user = new User();
+    user.Identifiant = login;
+    user.Password = password;
 
     if (login === 'admin') this.admin = true;
-
-    this.loggedIn = true;
-    return this.httpClient.post(environment.apiUrl + 'login', login);
+    const url = environment.apiUrl + 'user/login';
+    return this.httpClient.post(url, user);
   }
 
   logOut() {

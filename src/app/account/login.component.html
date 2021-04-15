@@ -1,23 +1,23 @@
 <mat-card>
     <mat-card-content>
-        <form ngForm #formLogin class="form" (submit)="onSubmit($event); formLogin.reset();">
+        <form ngForm #formLogin class="form" (submit)="onSubmit();">
             <h2>Authentification</h2>
             <mat-error *ngIf="loginInvalid">
                 Identifiant et/ou mot de passe incorrecte!
             </mat-error>
             <mat-form-field class="full-width-input">
-                <input matInput placeholder="Identifiant" formControlName="username" required>
-                <mat-error>
+                <input matInput placeholder="Identifiant" name="username" [(ngModel)]="username" required>
+                <mat-error *ngIf="usernameInvalid">
                     Veuillez vérifier ce champ!
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width-input">
-                <input matInput type="password" placeholder="Mot de passe" formControlName="password" required>
-                <mat-error>
+                <input matInput type="password" placeholder="Mot de passe" name="password" [(ngModel)]="password" required>
+                <mat-error *ngIf="passwordInvalid">
                     Veuillez vérifier ce champ!
                 </mat-error>
             </mat-form-field>
-            <button mat-raised-button color="primary">Se connecter</button>
+            <button mat-raised-button color="primary" >Se connecter</button>
         </form>
     </mat-card-content>
   </mat-card>
